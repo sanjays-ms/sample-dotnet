@@ -9,7 +9,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: 'TestMSBuild18_Net8'
+- job:
   displayName: 'MSBuild 18.0 - .NET 8'
   steps:
   - checkout: self
@@ -33,7 +33,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuild18_Net9'
+- job:
   displayName: 'MSBuild 18.0 - .NET 9'
   steps:
   - checkout: self
@@ -57,7 +57,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net9.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuild18_Net10'
+- job:
   displayName: 'MSBuild 18.0 - .NET 10'
   steps:
   - checkout: self
@@ -81,7 +81,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net10.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuild17_Net8'
+- job:
   displayName: 'MSBuild 17.0 - .NET 8'
   steps:
   - checkout: self
@@ -105,7 +105,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuild17_Net9'
+- job:
   displayName: 'MSBuild 17.0 - .NET 9'
   steps:
   - checkout: self
@@ -129,7 +129,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net9.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuild17_Net10'
+- job:
   displayName: 'MSBuild 17.0 - .NET 10'
   steps:
   - checkout: self
@@ -153,7 +153,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net10.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuildLatest_Net8'
+- job:
   displayName: 'MSBuild Latest - .NET 8 (should pick 18.0)'
   steps:
   - checkout: self
@@ -177,7 +177,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuildLatest_Net10'
+- job:
   displayName: 'MSBuild Latest - .NET 10 (should pick 18.0)'
   steps:
   - checkout: self
@@ -201,7 +201,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net10.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuild18_CsProj_Net8'
+- job:
   displayName: 'MSBuild 18.0 - .csproj - .NET 8'
   steps:
   - checkout: self
@@ -225,7 +225,7 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuild17_CsProj_Net10'
+- job:
   displayName: 'MSBuild 17.0 - .csproj - .NET 10'
   steps:
   - checkout: self
@@ -249,8 +249,8 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net10.0'
       maximumCpuCount: true
 
-- job: 'TestMSBuild20_NotExist'
-  displayName: 'MSBuild 20.0 - Non-existent version'
+- job:
+  displayName: 'MSBuild Version 20.0'
   steps:
   - checkout: self
     clean: true
@@ -262,7 +262,7 @@ jobs:
       projects: '**/*.sln*'
 
   - task: MSBuild@1
-    displayName: 'Build with MSBuild 20.0 (does not exist)'
+    displayName: 'Build with MSBuild 20.0'
     inputs:
       solution: '**/*.sln*'
       msbuildArchitecture: 'x64'
