@@ -154,7 +154,7 @@ jobs:
       maximumCpuCount: true
 
 - job:
-  displayName: 'MSBuild Latest - .NET 8 (should pick 18.0)'
+  displayName: 'MSBuild Latest - .NET 8'
   steps:
   - checkout: self
     clean: true
@@ -178,7 +178,7 @@ jobs:
       maximumCpuCount: true
 
 - job:
-  displayName: 'MSBuild Latest - .NET 10 (should pick 18.0)'
+  displayName: 'MSBuild Latest - .NET 10'
   steps:
   - checkout: self
     clean: true
