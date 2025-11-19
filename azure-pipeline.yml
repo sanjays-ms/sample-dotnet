@@ -11,29 +11,18 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: 'TestAgentWithPowerShell'
-  displayName: 'Test Agent - PowerShell Build'
+- job: 'TestMSBuild'
+  displayName: 'Test MSBuild Task'
   steps:
   - checkout: self
 
-  - powershell: |
-      Write-Host "Testing self-hosted agent..."
-      Write-Host "Current directory: $(Get-Location)"
-      Write-Host "Listing files:"
-      Get-ChildItem
-      Write-Host ""
-      Write-Host "Building with dotnet CLI..."
-      dotnet build --configuration Release
-    displayName: 'Build with PowerShell - dotnet build'
-
-- job: 'TestAgentWithDotNetTask'
-  displayName: 'Test Agent - DotNetCoreCLI Task'
-  steps:
-  - checkout: self
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Build with DotNetCoreCLI - All frameworks'
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild'
     inputs:
-      command: 'build'
-      projects: '**/*.sln*'
-      arguments: '--configuration $(buildConfiguration)'
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: 'latest'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      maximumCpuCount: true
