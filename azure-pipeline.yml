@@ -11,20 +11,20 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: 'TestAgentWithBash'
-  displayName: 'Test Agent - Bash Build'
+- job: 'TestAgentWithPowerShell'
+  displayName: 'Test Agent - PowerShell Build'
   steps:
   - checkout: self
 
-  - bash: |
-      echo "Testing self-hosted agent..."
-      echo "Current directory: $(pwd)"
-      echo "Listing files:"
-      ls -la
-      echo ""
-      echo "Building with dotnet CLI..."
+  - powershell: |
+      Write-Host "Testing self-hosted agent..."
+      Write-Host "Current directory: $(Get-Location)"
+      Write-Host "Listing files:"
+      Get-ChildItem
+      Write-Host ""
+      Write-Host "Building with dotnet CLI..."
       dotnet build --configuration Release
-    displayName: 'Build with Bash - dotnet build'
+    displayName: 'Build with PowerShell - dotnet build'
 
 - job: 'TestAgentWithDotNetTask'
   displayName: 'Test Agent - DotNetCoreCLI Task'
