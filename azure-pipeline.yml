@@ -16,6 +16,12 @@ jobs:
   steps:
   - checkout: self
 
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
   - task: MSBuild@1
     displayName: 'Build with MSBuild'
     inputs:
