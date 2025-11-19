@@ -54,23 +54,23 @@ jobs:
       maximumCpuCount: true
     continueOnError: true
 
-  - task: PowerShell@2
-    displayName: 'Check MSBuild 18.0 version'
-    inputs:
-      targetType: 'inline'
-      script: |
-        $msbuildPath = & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" -version 2>&1 | Out-String
-        Write-Host "MSBuild version output:"
-        Write-Host $msbuildPath
+  # - task: PowerShell@2
+  #   displayName: 'Check MSBuild 18.0 version'
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: |
+  #       $msbuildPath = & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" -version 2>&1 | Out-String
+  #       Write-Host "MSBuild version output:"
+  #       Write-Host $msbuildPath
         
-        # Try to find VS 2025 MSBuild
-        $vs2025Path = "C:\Program Files\Microsoft Visual Studio\2025\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
-        if (Test-Path $vs2025Path) {
-          Write-Host "MSBuild 18.0 found at: $vs2025Path"
-          & $vs2025Path -version
-        } else {
-          Write-Host "MSBuild 18.0 (VS 2025) not found"
-        }
+  #       # Try to find VS 2025 MSBuild
+  #       $vs2025Path = "C:\Program Files\Microsoft Visual Studio\2025\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
+  #       if (Test-Path $vs2025Path) {
+  #         Write-Host "MSBuild 18.0 found at: $vs2025Path"
+  #         & $vs2025Path -version
+  #       } else {
+  #         Write-Host "MSBuild 18.0 (VS 2025) not found"
+  #       }
 
 - job: 'TestMSBuild17Fallback'
   displayName: 'Test MSBuild 17.0 Fallback (VS 2022)'
@@ -110,27 +110,27 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net10.0 /t:rebuild'
       maximumCpuCount: true
 
-  - task: PowerShell@2
-    displayName: 'Check MSBuild 17.0 version'
-    inputs:
-      targetType: 'inline'
-      script: |
-        $vs2022Path = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
-        if (Test-Path $vs2022Path) {
-          Write-Host "MSBuild 17.0 found at: $vs2022Path"
-          & $vs2022Path -version
-        } else {
-          Write-Host "Checking other VS 2022 editions..."
-          $vs2022Pro = "C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe"
-          $vs2022Community = "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
-          if (Test-Path $vs2022Pro) {
-            Write-Host "MSBuild 17.0 found at: $vs2022Pro"
-            & $vs2022Pro -version
-          } elseif (Test-Path $vs2022Community) {
-            Write-Host "MSBuild 17.0 found at: $vs2022Community"
-            & $vs2022Community -version
-          }
-        }
+  # - task: PowerShell@2
+  #   displayName: 'Check MSBuild 17.0 version'
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: |
+  #       $vs2022Path = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
+  #       if (Test-Path $vs2022Path) {
+  #         Write-Host "MSBuild 17.0 found at: $vs2022Path"
+  #         & $vs2022Path -version
+  #       } else {
+  #         Write-Host "Checking other VS 2022 editions..."
+  #         $vs2022Pro = "C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe"
+  #         $vs2022Community = "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
+  #         if (Test-Path $vs2022Pro) {
+  #           Write-Host "MSBuild 17.0 found at: $vs2022Pro"
+  #           & $vs2022Pro -version
+  #         } elseif (Test-Path $vs2022Community) {
+  #           Write-Host "MSBuild 17.0 found at: $vs2022Community"
+  #           & $vs2022Community -version
+  #         }
+  #       }
 
 - job: 'TestMSBuildLatest'
   displayName: 'Test MSBuild Latest (Auto-detect)'
@@ -170,90 +170,90 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net10.0 /t:rebuild'
       maximumCpuCount: true
 
-  - task: PowerShell@2
-    displayName: 'Detect and report MSBuild version used'
-    inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "Detecting installed MSBuild versions..."
+  # - task: PowerShell@2
+  #   displayName: 'Detect and report MSBuild version used'
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: |
+  #       Write-Host "Detecting installed MSBuild versions..."
         
-        # Check for VS 2025 (MSBuild 18)
-        $vs2025Paths = @(
-          "C:\Program Files\Microsoft Visual Studio\2025\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
-          "C:\Program Files\Microsoft Visual Studio\2025\Professional\MSBuild\Current\Bin\MSBuild.exe",
-          "C:\Program Files\Microsoft Visual Studio\2025\Community\MSBuild\Current\Bin\MSBuild.exe"
-        )
+  #       # Check for VS 2025 (MSBuild 18)
+  #       $vs2025Paths = @(
+  #         "C:\Program Files\Microsoft Visual Studio\2025\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
+  #         "C:\Program Files\Microsoft Visual Studio\2025\Professional\MSBuild\Current\Bin\MSBuild.exe",
+  #         "C:\Program Files\Microsoft Visual Studio\2025\Community\MSBuild\Current\Bin\MSBuild.exe"
+  #       )
         
-        # Check for VS 2022 (MSBuild 17)
-        $vs2022Paths = @(
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
-          "C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe",
-          "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
-        )
+  #       # Check for VS 2022 (MSBuild 17)
+  #       $vs2022Paths = @(
+  #         "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
+  #         "C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe",
+  #         "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
+  #       )
         
-        Write-Host "`n=== MSBuild 18.0 (VS 2025) Check ==="
-        $found18 = $false
-        foreach ($path in $vs2025Paths) {
-          if (Test-Path $path) {
-            Write-Host "✓ Found: $path"
-            & $path -version
-            $found18 = $true
-            break
-          }
-        }
-        if (-not $found18) {
-          Write-Host "✗ MSBuild 18.0 not found"
-        }
+  #       Write-Host "`n=== MSBuild 18.0 (VS 2025) Check ==="
+  #       $found18 = $false
+  #       foreach ($path in $vs2025Paths) {
+  #         if (Test-Path $path) {
+  #           Write-Host "✓ Found: $path"
+  #           & $path -version
+  #           $found18 = $true
+  #           break
+  #         }
+  #       }
+  #       if (-not $found18) {
+  #         Write-Host "✗ MSBuild 18.0 not found"
+  #       }
         
-        Write-Host "`n=== MSBuild 17.0 (VS 2022) Check ==="
-        $found17 = $false
-        foreach ($path in $vs2022Paths) {
-          if (Test-Path $path) {
-            Write-Host "✓ Found: $path"
-            & $path -version
-            $found17 = $true
-            break
-          }
-        }
-        if (-not $found17) {
-          Write-Host "✗ MSBuild 17.0 not found"
-        }
+  #       Write-Host "`n=== MSBuild 17.0 (VS 2022) Check ==="
+  #       $found17 = $false
+  #       foreach ($path in $vs2022Paths) {
+  #         if (Test-Path $path) {
+  #           Write-Host "✓ Found: $path"
+  #           & $path -version
+  #           $found17 = $true
+  #           break
+  #         }
+  #       }
+  #       if (-not $found17) {
+  #         Write-Host "✗ MSBuild 17.0 not found"
+  #       }
         
-        Write-Host "`n=== Summary ==="
-        Write-Host "MSBuild 18.0 Available: $found18"
-        Write-Host "MSBuild 17.0 Available: $found17"
+  #       Write-Host "`n=== Summary ==="
+  #       Write-Host "MSBuild 18.0 Available: $found18"
+  #       Write-Host "MSBuild 17.0 Available: $found17"
 
-  - task: PowerShell@2
-    displayName: 'Verify build outputs for all .NET versions'
-    inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "Checking build outputs..."
+  # - task: PowerShell@2
+  #   displayName: 'Verify build outputs for all .NET versions'
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: |
+  #       Write-Host "Checking build outputs..."
         
-        $net8Output = Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse -Filter "*.dll" | Where-Object { $_.FullName -like "*\bin\Release\net8.0\*" }
-        $net9Output = Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse -Filter "*.dll" | Where-Object { $_.FullName -like "*\bin\Release\net9.0\*" }
-        $net10Output = Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse -Filter "*.dll" | Where-Object { $_.FullName -like "*\bin\Release\net10.0\*" }
+  #       $net8Output = Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse -Filter "*.dll" | Where-Object { $_.FullName -like "*\bin\Release\net8.0\*" }
+  #       $net9Output = Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse -Filter "*.dll" | Where-Object { $_.FullName -like "*\bin\Release\net9.0\*" }
+  #       $net10Output = Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse -Filter "*.dll" | Where-Object { $_.FullName -like "*\bin\Release\net10.0\*" }
         
-        Write-Host "`n=== .NET 8.0 Build Output ==="
-        if ($net8Output) {
-          Write-Host "✓ .NET 8.0 build successful"
-          $net8Output | ForEach-Object { Write-Host "  - $($_.Name)" }
-        } else {
-          Write-Host "✗ .NET 8.0 build output not found"
-        }
+  #       Write-Host "`n=== .NET 8.0 Build Output ==="
+  #       if ($net8Output) {
+  #         Write-Host "✓ .NET 8.0 build successful"
+  #         $net8Output | ForEach-Object { Write-Host "  - $($_.Name)" }
+  #       } else {
+  #         Write-Host "✗ .NET 8.0 build output not found"
+  #       }
         
-        Write-Host "`n=== .NET 9.0 Build Output ==="
-        if ($net9Output) {
-          Write-Host "✓ .NET 9.0 build successful"
-          $net9Output | ForEach-Object { Write-Host "  - $($_.Name)" }
-        } else {
-          Write-Host "✗ .NET 9.0 build output not found"
-        }
+  #       Write-Host "`n=== .NET 9.0 Build Output ==="
+  #       if ($net9Output) {
+  #         Write-Host "✓ .NET 9.0 build successful"
+  #         $net9Output | ForEach-Object { Write-Host "  - $($_.Name)" }
+  #       } else {
+  #         Write-Host "✗ .NET 9.0 build output not found"
+  #       }
         
-        Write-Host "`n=== .NET 10.0 Build Output ==="
-        if ($net10Output) {
-          Write-Host "✓ .NET 10.0 build successful"
-          $net10Output | ForEach-Object { Write-Host "  - $($_.Name)" }
-        } else {
-          Write-Host "✗ .NET 10.0 build output not found"
-        }
+  #       Write-Host "`n=== .NET 10.0 Build Output ==="
+  #       if ($net10Output) {
+  #         Write-Host "✓ .NET 10.0 build successful"
+  #         $net10Output | ForEach-Object { Write-Host "  - $($_.Name)" }
+  #       } else {
+  #         Write-Host "✗ .NET 10.0 build output not found"
+  #       }
