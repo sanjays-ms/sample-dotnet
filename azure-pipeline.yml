@@ -4,17 +4,16 @@ pr: none
 
 pool:
   name: 'SanjaySelfHosted'
-  demands:
-  - agent.name -equals MSBuildWindowsAgent
 
 variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: 'TestMSBuild'
-  displayName: 'Test MSBuild Task'
+- job: 'TestMSBuild18_Net8'
+  displayName: 'MSBuild 18.0 - .NET 8'
   steps:
   - checkout: self
+    clean: true
 
   - task: DotNetCoreCLI@2
     displayName: 'Restore NuGet packages'
@@ -23,12 +22,252 @@ jobs:
       projects: '**/*.sln*'
 
   - task: MSBuild@1
-    displayName: 'Build with MSBuild'
+    displayName: 'Build with MSBuild 18.0 - .NET 8'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuild18_Net9'
+  displayName: 'MSBuild 18.0 - .NET 9'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 18.0 - .NET 9'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net9.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuild18_Net10'
+  displayName: 'MSBuild 18.0 - .NET 10'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 18.0 - .NET 10'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net10.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuild17_Net8'
+  displayName: 'MSBuild 17.0 - .NET 8'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 17.0 - .NET 8'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '17.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuild17_Net9'
+  displayName: 'MSBuild 17.0 - .NET 9'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 17.0 - .NET 9'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '17.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net9.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuild17_Net10'
+  displayName: 'MSBuild 17.0 - .NET 10'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 17.0 - .NET 10'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '17.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net10.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuildLatest_Net8'
+  displayName: 'MSBuild Latest - .NET 8 (should pick 18.0)'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild Latest - .NET 8'
     inputs:
       solution: '**/*.sln*'
       msbuildArchitecture: 'x64'
       msbuildLocationMethod: 'version'
       msbuildVersion: 'latest'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuildLatest_Net10'
+  displayName: 'MSBuild Latest - .NET 10 (should pick 18.0)'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild Latest - .NET 10'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: 'latest'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net10.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuild18_CsProj_Net8'
+  displayName: 'MSBuild 18.0 - .csproj - .NET 8'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+
+  - task: MSBuild@1
+    displayName: 'Build .csproj with MSBuild 18.0 - .NET 8'
+    inputs:
+      solution: '**/*.csproj'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuild17_CsProj_Net10'
+  displayName: 'MSBuild 17.0 - .csproj - .NET 10'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+
+  - task: MSBuild@1
+    displayName: 'Build .csproj with MSBuild 17.0 - .NET 10'
+    inputs:
+      solution: '**/*.csproj'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '17.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net10.0'
+      maximumCpuCount: true
+
+- job: 'TestMSBuild20_NotExist'
+  displayName: 'MSBuild 20.0 - Non-existent version'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln*'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 20.0 (does not exist)'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '20.0'
       platform: 'Any CPU'
       configuration: '$(buildConfiguration)'
       maximumCpuCount: true
