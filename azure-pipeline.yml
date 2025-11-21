@@ -15,11 +15,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 18.0 - .NET 8'
@@ -39,11 +41,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 18.0 - .NET 9'
@@ -63,11 +67,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 18.0 - .NET 10'
@@ -87,11 +93,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 17.0 - .NET 8'
@@ -111,11 +119,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 17.0 - .NET 9'
@@ -135,11 +145,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 17.0 - .NET 10'
@@ -159,11 +171,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild Latest - .NET 8'
@@ -183,11 +197,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild Latest - .NET 10'
@@ -207,11 +223,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.csproj'
+      restoreSolution: '**/*.csproj'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build .csproj with MSBuild 18.0 - .NET 8'
@@ -231,11 +249,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.csproj'
+      restoreSolution: '**/*.csproj'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build .csproj with MSBuild 17.0 - .NET 10'
@@ -255,11 +275,13 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
     displayName: 'Restore NuGet packages'
     inputs:
       command: 'restore'
-      projects: '**/*.sln*'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 20.0'
