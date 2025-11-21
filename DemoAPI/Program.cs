@@ -1,16 +1,10 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-//builder.Services.AddOpenApi();
-
 var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.MapOpenApi();
-//}
 
 app.UseHttpsRedirection();
 
@@ -32,6 +26,37 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+app.MapGet("/nuget-test", (ILogger<Program> logger) =>
+{
+    // Demonstrate Microsoft.Extensions.Logging functionality
+    logger.LogInformation("Testing Newtonsoft.Json and Microsoft.Extensions.Logging packages");
+
+    // Demonstrate Newtonsoft.Json functionality
+    var testData = new
+    {
+        Message = "Both NuGet packages are working correctly!",
+        Timestamp = DateTime.UtcNow,
+        TargetFramework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
+        Packages = new
+        {
+            NewtonsoftJson = "13.0.3",
+            MicrosoftExtensionsLogging = "10.0.0"
+        }
+    };
+
+    // Serialize to JSON string
+    string jsonString = JsonConvert.SerializeObject(testData, Formatting.Indented);
+
+    // Parse back to JObject to demonstrate JSON manipulation
+    JObject parsedJson = JObject.Parse(jsonString);
+    parsedJson["AdditionalInfo"] = "This endpoint tests NuGet package restore for Azure Pipelines";
+
+    logger.LogInformation("Successfully tested both NuGet packages");
+
+    return Results.Ok(parsedJson);
+})
+.WithName("NuGetPackageTest");
 
 app.Run();
 
