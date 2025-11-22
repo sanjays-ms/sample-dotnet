@@ -35,261 +35,261 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0'
       maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild 18.0 - .NET 9'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild 18.0 - .NET 9'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.sln*'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build with MSBuild 18.0 - .NET 9'
-#     inputs:
-#       solution: '**/*.sln*'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: '18.0'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net9.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 18.0 - .NET 9'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net9.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild 18.0 - .NET 10'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild 18.0 - .NET 10'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.sln*'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build with MSBuild 18.0 - .NET 10'
-#     inputs:
-#       solution: '**/*.sln*'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: '18.0'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net10.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 18.0 - .NET 10'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net10.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild 17.0 - .NET 8'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild 17.0 - .NET 8'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.sln*'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build with MSBuild 17.0 - .NET 8'
-#     inputs:
-#       solution: '**/*.sln*'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: '17.0'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net8.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 17.0 - .NET 8'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '17.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild 17.0 - .NET 9'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild 17.0 - .NET 9'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.sln*'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build with MSBuild 17.0 - .NET 9'
-#     inputs:
-#       solution: '**/*.sln*'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: '17.0'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net9.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 17.0 - .NET 9'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '17.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net9.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild 17.0 - .NET 10'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild 17.0 - .NET 10'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.sln*'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build with MSBuild 17.0 - .NET 10'
-#     inputs:
-#       solution: '**/*.sln*'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: '17.0'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net10.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 17.0 - .NET 10'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '17.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net10.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild Latest - .NET 8'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild Latest - .NET 8'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.sln*'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build with MSBuild Latest - .NET 8'
-#     inputs:
-#       solution: '**/*.sln*'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: 'latest'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net8.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild Latest - .NET 8'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: 'latest'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild Latest - .NET 10'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild Latest - .NET 10'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.sln*'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build with MSBuild Latest - .NET 10'
-#     inputs:
-#       solution: '**/*.sln*'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: 'latest'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net10.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild Latest - .NET 10'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: 'latest'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net10.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild 18.0 - .csproj - .NET 8'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild 18.0 - .csproj - .NET 8'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.csproj'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.csproj'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build .csproj with MSBuild 18.0 - .NET 8'
-#     inputs:
-#       solution: '**/*.csproj'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: '18.0'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net8.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build .csproj with MSBuild 18.0 - .NET 8'
+    inputs:
+      solution: '**/*.csproj'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild 17.0 - .csproj - .NET 10'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild 17.0 - .csproj - .NET 10'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.csproj'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.csproj'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build .csproj with MSBuild 17.0 - .NET 10'
-#     inputs:
-#       solution: '**/*.csproj'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: '17.0'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       msbuildArguments: '/p:TargetFramework=net10.0'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build .csproj with MSBuild 17.0 - .NET 10'
+    inputs:
+      solution: '**/*.csproj'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '17.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net10.0'
+      maximumCpuCount: true
 
-# - job:
-#   displayName: 'MSBuild Version 20.0'
-#   steps:
-#   - checkout: self
-#     clean: true
+- job:
+  displayName: 'MSBuild Version 20.0'
+  steps:
+  - checkout: self
+    clean: true
 
-#   - task: NuGetCommand@2
-#     displayName: 'Restore NuGet packages'
-#     inputs:
-#       command: 'restore'
-#       restoreSolution: '**/*.sln*'
-#       feedsToUse: 'select'
-#       includeNuGetOrg: true
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln*'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
 
-#   - task: MSBuild@1
-#     displayName: 'Build with MSBuild 20.0'
-#     inputs:
-#       solution: '**/*.sln*'
-#       msbuildArchitecture: 'x64'
-#       msbuildLocationMethod: 'version'
-#       msbuildVersion: '20.0'
-#       platform: 'Any CPU'
-#       configuration: '$(buildConfiguration)'
-#       maximumCpuCount: true
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 20.0'
+    inputs:
+      solution: '**/*.sln*'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '20.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      maximumCpuCount: true
