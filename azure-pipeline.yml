@@ -310,19 +310,19 @@ jobs:
 #       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
 #       logProjectEvents: true
 
-# Test Case: NuGet custom command with MSBuildVersion 17.0
-# Validates NuGet can use specific MSBuild version 17.0 via custom command
+# Test Case: NuGet custom command with MSBuildVersion 18
+# Validates NuGet can use specific MSBuild version via custom command
 - job:
-  displayName: 'NuGet Custom MSBuild 17.0 - .NET 9'
+  displayName: 'NuGet Custom MSBuild 18 - .NET 8'
   steps:
   - checkout: self
     clean: true
 
   - task: NuGetCommand@2
-    displayName: 'Restore with NuGet custom MSBuildVersion 17.0'
+    displayName: 'Restore with NuGet custom MSBuildVersion 18'
     inputs:
       command: 'custom'
-      arguments: 'restore SampleAPI.sln -MSBuildVersion 17.0 -Verbosity Detailed'
+      arguments: 'restore SampleAPI.sln -MSBuildVersion 18 -Verbosity Detailed'
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 17.0 - .NET 9'
