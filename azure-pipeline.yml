@@ -1,3 +1,6 @@
+# Simplified Azure Pipeline - Essential Test Cases Only
+# For complete test cases library, see azure-pipeline-all-testcases.yml
+
 trigger: none
 
 pr: none
@@ -9,9 +12,12 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
+# ==============================================================================
+# Core MSBuild Test Cases (8 jobs)
+# ==============================================================================
+
 # Test Case: MSBuild 18.0 with .NET 8 targeting solution file
 # Validates MSBuild 18.0 can build net8.0 target framework from solution file
-# Uses x64 architecture and parallel build
 - job:
   displayName: 'MSBuild 18.0 - .NET 8 - Solution'
   steps:
@@ -97,35 +103,6 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: MSBuild 17.0 with .NET 8 targeting solution file
-# Validates MSBuild 17.0 compatibility with net8.0 target framework
-- job:
-  displayName: 'MSBuild 17.0 - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 17.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '17.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
 # Test Case: MSBuild 17.0 with .NET 9 targeting solution file
 # Validates MSBuild 17.0 compatibility with net9.0 target framework
 - job:
@@ -155,37 +132,8 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: MSBuild 17.0 with .NET 10 targeting solution file
-# Validates MSBuild 17.0 compatibility with net10.0 target framework
-- job:
-  displayName: 'MSBuild 17.0 - .NET 10 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 17.0 - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '17.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild Latest version with .NET 8 targeting solution file
-# Validates that latest MSBuild resolves to highest installed version and builds net8.0
+# Test Case: MSBuild Latest with .NET 8 targeting solution file
+# Validates that latest MSBuild resolves to highest installed version
 - job:
   displayName: 'MSBuild Latest - .NET 8 - Solution'
   steps:
@@ -213,67 +161,8 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: MSBuild Latest version with .NET 9 targeting solution file
-# Validates that latest MSBuild resolves correctly and builds net9.0
-- job:
-  displayName: 'MSBuild Latest - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild Latest - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: 'latest'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild Latest version with .NET 10 targeting solution file
-# Validates that latest MSBuild resolves correctly and builds net10.0
-- job:
-  displayName: 'MSBuild Latest - .NET 10 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild Latest - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: 'latest'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
-      logProjectEvents: true
-
 # Test Case: MSBuild 18.0 targeting csproj file directly with .NET 8
-# Validates MSBuild 18.0 can build project files directly without solution file
-# Tests NuGet package restore for Newtonsoft.Json and Microsoft.Extensions.Logging
+# Validates MSBuild can build project files directly without solution file
 - job:
   displayName: 'MSBuild 18.0 - .NET 8 - CSProj Direct'
   steps:
@@ -301,213 +190,10 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: MSBuild 18.0 targeting csproj file directly with .NET 9
-# Validates direct project build without solution wrapper for net9.0
-- job:
-  displayName: 'MSBuild 18.0 - .NET 9 - CSProj Direct'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages for csproj'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.csproj'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build csproj with MSBuild 18.0 - .NET 9'
-    inputs:
-      solution: '**/*.csproj'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild 18.0 targeting csproj file directly with .NET 10
-# Validates direct project build for latest net10.0 framework
-- job:
-  displayName: 'MSBuild 18.0 - .NET 10 - CSProj Direct'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages for csproj'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.csproj'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build csproj with MSBuild 18.0 - .NET 10'
-    inputs:
-      solution: '**/*.csproj'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild 17.0 targeting csproj file directly with .NET 8
-# Validates MSBuild 17.0 can build csproj directly for net8.0
-- job:
-  displayName: 'MSBuild 17.0 - .NET 8 - CSProj Direct'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages for csproj'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.csproj'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build csproj with MSBuild 17.0 - .NET 8'
-    inputs:
-      solution: '**/*.csproj'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '17.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild 17.0 targeting csproj file directly with .NET 10
-# Validates MSBuild 17.0 compatibility with net10.0 via direct csproj build
-- job:
-  displayName: 'MSBuild 17.0 - .NET 10 - CSProj Direct'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages for csproj'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.csproj'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build csproj with MSBuild 17.0 - .NET 10'
-    inputs:
-      solution: '**/*.csproj'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '17.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild Latest targeting csproj file directly with .NET 9
-# Validates latest MSBuild version selection with direct csproj build
-- job:
-  displayName: 'MSBuild Latest - .NET 9 - CSProj Direct'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages for csproj'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.csproj'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build csproj with MSBuild Latest - .NET 9'
-    inputs:
-      solution: '**/*.csproj'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: 'latest'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild 16.0 with .NET 8 targeting solution file
-# Validates older MSBuild 16.0 can still build newer net8.0 framework
-- job:
-  displayName: 'MSBuild 16.0 - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 16.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '16.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild 18.0 with x86 architecture and .NET 9
-# Validates MSBuild x86 architecture can build net9.0 projects
-- job:
-  displayName: 'MSBuild 18.0 x86 - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 x86 - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x86'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
-      logProjectEvents: true
-
 # Test Case: MSBuild 18.0 with clean build and .NET 10
 # Validates clean build functionality removes all previous build artifacts
 - job:
-  displayName: 'MSBuild 18.0 Clean Build - .NET 10 - Solution'
+  displayName: 'MSBuild 18.0 Clean Build - .NET 10'
   steps:
   - checkout: self
     clean: true
@@ -534,157 +220,12 @@ jobs:
       clean: true
       logProjectEvents: true
 
-# Test Case: MSBuild 18.0 without parallel build and .NET 8
-# Validates sequential build process without parallel processing
-- job:
-  displayName: 'MSBuild 18.0 Sequential - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Sequential build with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild 18.0 with Debug configuration and .NET 9
-# Validates build with Debug configuration instead of Release
-- job:
-  displayName: 'MSBuild 18.0 Debug - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Debug build with MSBuild 18.0 - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: 'Debug'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: NuGet restore with noCache option and MSBuild 18.0 with .NET 10
-# Validates NuGet restore without local cache forces fresh package download
-- job:
-  displayName: 'MSBuild 18.0 NoCache - .NET 10 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages without cache'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      noCache: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: NuGet restore with disableParallelProcessing and MSBuild 17.0 with .NET 8
-# Validates sequential NuGet restore process
-- job:
-  displayName: 'MSBuild 17.0 Sequential Restore - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages sequentially'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      disableParallelProcessing: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 17.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '17.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild 20.0 targeting solution file
-# Validates future MSBuild version 20.0 compatibility or graceful fallback
-- job:
-  displayName: 'MSBuild 20.0 - Solution (Future Version Test)'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 20.0'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '20.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/v:detailed'
-      logProjectEvents: true
-    continueOnError: true
+# ==============================================================================
+# Core VSBuild Test Cases (2 jobs)
+# ==============================================================================
 
 # Test Case: VSBuild Latest with .NET 8 targeting solution file
-# Validates VSBuild with latest Visual Studio version can build net8.0
-# VSBuild automatically sets VisualStudioVersion property
+# Validates VSBuild with latest Visual Studio version
 - job:
   displayName: 'VSBuild Latest - .NET 8 - Solution'
   steps:
@@ -711,92 +252,8 @@ jobs:
       msbuildArchitecture: 'x64'
       logProjectEvents: true
 
-# Test Case: VSBuild Latest with .NET 9 targeting solution file
-# Validates VSBuild latest version with net9.0 framework
-- job:
-  displayName: 'VSBuild Latest - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild Latest - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: 'latest'
-      msbuildArgs: '/p:TargetFramework=net9.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: VSBuild Latest with .NET 10 targeting solution file
-# Validates VSBuild latest version with net10.0 framework
-- job:
-  displayName: 'VSBuild Latest - .NET 10 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild Latest - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: 'latest'
-      msbuildArgs: '/p:TargetFramework=net10.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: VSBuild 17.0 with .NET 8 targeting solution file
-# Validates VSBuild with Visual Studio 2022 version 17.0 can build net8.0
-- job:
-  displayName: 'VSBuild 17.0 - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild 17.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: '17.0'
-      msbuildArgs: '/p:TargetFramework=net8.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
 # Test Case: VSBuild 17.0 with .NET 9 targeting solution file
-# Validates VSBuild 17.0 with net9.0 framework
+# Validates VSBuild with Visual Studio 2022 version 17.0
 - job:
   displayName: 'VSBuild 17.0 - .NET 9 - Solution'
   steps:
@@ -823,210 +280,14 @@ jobs:
       msbuildArchitecture: 'x64'
       logProjectEvents: true
 
-# Test Case: VSBuild 17.0 with .NET 10 targeting solution file
-# Validates VSBuild 17.0 with net10.0 framework
+# ==============================================================================
+# NuGet Custom Command Test Cases (2 jobs)
+# ==============================================================================
+
+# Test Case: NuGet custom command with MSBuildVersion 18.0
+# Validates NuGet can use specific MSBuild version via custom command
 - job:
-  displayName: 'VSBuild 17.0 - .NET 10 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild 17.0 - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: '17.0'
-      msbuildArgs: '/p:TargetFramework=net10.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: VSBuild 16.0 with .NET 8 targeting solution file
-# Validates VSBuild with Visual Studio 2019 version 16.0 can build net8.0
-- job:
-  displayName: 'VSBuild 16.0 - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild 16.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: '16.0'
-      msbuildArgs: '/p:TargetFramework=net8.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: VSBuild with custom version 18.0 and .NET 8
-# Validates VSBuild customVersion parameter with enhancement version 18.0
-- job:
-  displayName: 'VSBuild Custom 18.0 - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild Custom 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: 'latest'
-      customVersion: '18.0'
-      msbuildArgs: '/p:TargetFramework=net8.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: VSBuild with custom version 18.0 and .NET 9
-# Validates VSBuild customVersion 18.0 with net9.0 framework
-- job:
-  displayName: 'VSBuild Custom 18.0 - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild Custom 18.0 - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: 'latest'
-      customVersion: '18.0'
-      msbuildArgs: '/p:TargetFramework=net9.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: VSBuild with custom version 18.0 and .NET 10
-# Validates VSBuild customVersion 18.0 with net10.0 framework
-- job:
-  displayName: 'VSBuild Custom 18.0 - .NET 10 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild Custom 18.0 - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: 'latest'
-      customVersion: '18.0'
-      msbuildArgs: '/p:TargetFramework=net10.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: VSBuild x86 architecture with .NET 9
-# Validates VSBuild with x86 MSBuild architecture
-- job:
-  displayName: 'VSBuild Latest x86 - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild Latest x86 - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: 'latest'
-      msbuildArgs: '/p:TargetFramework=net9.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x86'
-      logProjectEvents: true
-
-# Test Case: VSBuild with clean build and .NET 10
-# Validates VSBuild clean build removes all previous artifacts
-- job:
-  displayName: 'VSBuild Latest Clean - .NET 10 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Clean build with VSBuild Latest - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: 'latest'
-      msbuildArgs: '/p:TargetFramework=net10.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      clean: true
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: NuGet custom command with MSBuildVersion 18.0 and MSBuild 18.0 with .NET 8
-# Validates NuGet can use specific MSBuild version 18.0 via custom command during restore
-- job:
-  displayName: 'NuGet Custom MSBuild 18.0 - MSBuild 18.0 - .NET 8'
+  displayName: 'NuGet Custom MSBuild 18.0 - .NET 8'
   steps:
   - checkout: self
     clean: true
@@ -1049,10 +310,10 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: NuGet custom command with MSBuildVersion 17.0 and MSBuild 17.0 with .NET 9
-# Validates NuGet can use specific MSBuild version 17.0 via custom command during restore
+# Test Case: NuGet custom command with MSBuildVersion 17.0
+# Validates NuGet can use specific MSBuild version 17.0 via custom command
 - job:
-  displayName: 'NuGet Custom MSBuild 17.0 - MSBuild 17.0 - .NET 9'
+  displayName: 'NuGet Custom MSBuild 17.0 - .NET 9'
   steps:
   - checkout: self
     clean: true
@@ -1075,54 +336,12 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: NuGet custom command with MSBuildVersion 16.0 and MSBuild 16.0 with .NET 8
-# Validates NuGet can use older MSBuild version 16.0 via custom command during restore
-- job:
-  displayName: 'NuGet Custom MSBuild 16.0 - MSBuild 16.0 - .NET 8'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore with NuGet custom MSBuildVersion 16.0'
-    inputs:
-      command: 'custom'
-      arguments: 'restore **/*.sln -MSBuildVersion 16.0 -Verbosity Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 16.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '16.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: NuGet custom command with MSBuildVersion latest and MSBuild latest with .NET 10
-# Validates NuGet can use latest MSBuild version via custom command during restore
-- job:
-  displayName: 'NuGet Custom MSBuild Latest - MSBuild Latest - .NET 10'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore with NuGet custom MSBuildVersion latest'
-    inputs:
-      command: 'custom'
-      arguments: 'restore **/*.sln -MSBuildVersion latest -Verbosity Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild Latest - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: 'latest'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
-      logProjectEvents: true
+# ==============================================================================
+# Summary:
+# - 8 MSBuild@1 test cases covering versions 18.0, 17.0, latest with .NET 8/9/10
+# - 2 VSBuild@1 test cases covering latest and 17.0 with .NET 8/9
+# - 2 NuGet custom command test cases with MSBuildVersion 18.0 and 17.0
+# Total: 12 essential jobs optimized for self-hosted agent
+#
+# For complete 39 test cases, see: azure-pipeline-all-testcases.yml
+# ==============================================================================
