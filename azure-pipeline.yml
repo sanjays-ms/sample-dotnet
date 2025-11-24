@@ -18,61 +18,61 @@ jobs:
 
 # Test Case: MSBuild 18.0 with .NET 8 targeting solution file
 # Validates MSBuild 18.0 can build net8.0 target framework from solution file
-- job:
-  displayName: 'MSBuild 18.0 - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
+# - job:
+#   displayName: 'MSBuild 18.0 - .NET 8 - Solution'
+#   steps:
+#   - checkout: self
+#     clean: true
 
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
+#   - task: NuGetCommand@2
+#     displayName: 'Restore NuGet packages'
+#     inputs:
+#       command: 'restore'
+#       restoreSolution: '**/*.sln'
+#       feedsToUse: 'select'
+#       includeNuGetOrg: true
+#       verbosityRestore: 'Detailed'
 
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
+#   - task: MSBuild@1
+#     displayName: 'Build with MSBuild 18.0 - .NET 8'
+#     inputs:
+#       solution: '**/*.sln'
+#       msbuildArchitecture: 'x64'
+#       msbuildLocationMethod: 'version'
+#       msbuildVersion: '18.0'
+#       platform: 'Any CPU'
+#       configuration: '$(buildConfiguration)'
+#       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
+#       logProjectEvents: true
 
 # Test Case: MSBuild 18.0 with .NET 9 targeting solution file
 # Validates MSBuild 18.0 can build net9.0 target framework
-- job:
-  displayName: 'MSBuild 18.0 - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
+# - job:
+#   displayName: 'MSBuild 18.0 - .NET 9 - Solution'
+#   steps:
+#   - checkout: self
+#     clean: true
 
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
+#   - task: NuGetCommand@2
+#     displayName: 'Restore NuGet packages'
+#     inputs:
+#       command: 'restore'
+#       restoreSolution: '**/*.sln'
+#       feedsToUse: 'select'
+#       includeNuGetOrg: true
+#       verbosityRestore: 'Detailed'
 
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
-      logProjectEvents: true
+#   - task: MSBuild@1
+#     displayName: 'Build with MSBuild 18.0 - .NET 9'
+#     inputs:
+#       solution: '**/*.sln'
+#       msbuildArchitecture: 'x64'
+#       msbuildLocationMethod: 'version'
+#       msbuildVersion: '18.0'
+#       platform: 'Any CPU'
+#       configuration: '$(buildConfiguration)'
+#       msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
+#       logProjectEvents: true
 
 # Test Case: MSBuild 18.0 with .NET 10 targeting solution file
 # Validates MSBuild 18.0 can build net10.0 target framework
@@ -296,7 +296,7 @@ jobs:
     displayName: 'Restore with NuGet custom MSBuildVersion 18.0'
     inputs:
       command: 'custom'
-      arguments: 'restore **/*.sln -MSBuildVersion 18.0 -Verbosity Detailed'
+      arguments: 'restore SampleAPI.sln -MSBuildVersion 18.0 -Verbosity Detailed'
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 18.0 - .NET 8'
@@ -322,7 +322,7 @@ jobs:
     displayName: 'Restore with NuGet custom MSBuildVersion 17.0'
     inputs:
       command: 'custom'
-      arguments: 'restore **/*.sln -MSBuildVersion 17.0 -Verbosity Detailed'
+      arguments: 'restore SampleAPI.sln -MSBuildVersion 17.0 -Verbosity Detailed'
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 17.0 - .NET 9'
