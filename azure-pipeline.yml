@@ -348,7 +348,7 @@ jobs:
     displayName: 'Restore with NuGet custom MSBuildVersion 17'
     inputs:
       command: 'custom'
-      arguments: 'restore SampleAPI.sln -MSBuildVersion 17 -Verbosity Detailed'
+      arguments: 'restore SampleAPI.sln -MSBuildVersion 17.14.23.42201 -Verbosity Detailed'
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 17.0 - .NET 9'
