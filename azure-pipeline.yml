@@ -1,5 +1,5 @@
-# Simplified Azure Pipeline - Essential Test Cases Only
-# For complete test cases library, see azure-pipeline-all-testcases.yml
+# Azure Pipeline - VSTest@3 Task Testing
+# Focused on testing Visual Studio Test v3 functionality
 
 trigger: none
 
@@ -13,13 +13,13 @@ variables:
 
 jobs:
 # ==============================================================================
-# Core MSBuild Test Cases (8 jobs)
+# VSTest@3 Test Cases
 # ==============================================================================
 
-# Test Case: MSBuild 18.0 with .NET 8 targeting solution file
-# Validates MSBuild 18.0 can build net8.0 target framework from solution file
+# Test Case: VSTest v3 with latest platform version
+# Validates VSTest@3 can discover and run tests with latest VS version
 - job:
-  displayName: 'MSBuild 18.0 - .NET 8 - Solution'
+  displayName: 'VSTest v3 - Latest - All Tests'
   steps:
   - checkout: self
     clean: true
@@ -45,39 +45,25 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: MSBuild 18.0 with .NET 9 targeting solution file
-# Validates MSBuild 18.0 can build net9.0 target framework
-- job:
-  displayName: 'MSBuild 18.0 - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
+  - task: VSTest@3
+    displayName: 'Run Tests with VSTest v3 - Latest'
     inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*Tests*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      vsTestVersion: 'latest'
       platform: 'Any CPU'
       configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
-      logProjectEvents: true
+      codeCoverageEnabled: true
+      testRunTitle: 'VSTest v3 - Latest - All Tests'
 
-# Test Case: MSBuild 18.0 with .NET 10 targeting solution file
-# Validates MSBuild 18.0 can build net10.0 target framework
+# Test Case: VSTest v3 with VS 17.0 platform version
+# Validates VSTest@3 can run tests with Visual Studio 2022 version 17.0
 - job:
-  displayName: 'MSBuild 18.0 - .NET 10 - Solution'
+  displayName: 'VSTest v3 - VS 17.0 - All Tests'
   steps:
   - checkout: self
     clean: true
@@ -92,36 +78,7 @@ jobs:
       verbosityRestore: 'Detailed'
 
   - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild 17.0 with .NET 9 targeting solution file
-# Validates MSBuild 17.0 compatibility with net9.0 target framework
-- job:
-  displayName: 'MSBuild 17.0 - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 17.0 - .NET 9'
+    displayName: 'Build with MSBuild 17.0 - .NET 8'
     inputs:
       solution: '**/*.sln'
       msbuildArchitecture: 'x64'
@@ -129,71 +86,27 @@ jobs:
       msbuildVersion: '17.0'
       platform: 'Any CPU'
       configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
-      logProjectEvents: true
-
-# Test Case: MSBuild Latest with .NET 8 targeting solution file
-# Validates that latest MSBuild resolves to highest installed version
-- job:
-  displayName: 'MSBuild Latest - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild Latest - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: 'latest'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: MSBuild 18.0 targeting csproj file directly with .NET 8
-# Validates MSBuild can build project files directly without solution file
-- job:
-  displayName: 'MSBuild 18.0 - .NET 8 - CSProj Direct'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages for csproj'
+  - task: VSTest@3
+    displayName: 'Run Tests with VSTest v3 - VS 17.0'
     inputs:
-      command: 'restore'
-      restoreSolution: '**/*.csproj'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build csproj with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.csproj'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*Tests*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      vsTestVersion: '17.0'
       platform: 'Any CPU'
       configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
+      testRunTitle: 'VSTest v3 - VS 17.0 - All Tests'
 
-# Test Case: MSBuild 18.0 with clean build and .NET 10
-# Validates clean build functionality removes all previous build artifacts
+# Test Case: VSTest v3 with test filter criteria - Unit tests only
+# Validates VSTest@3 test filtering with TestCategory
 - job:
-  displayName: 'MSBuild 18.0 Clean Build - .NET 10'
+  displayName: 'VSTest v3 - Filter - Unit Tests'
   steps:
   - checkout: self
     clean: true
@@ -206,97 +119,6 @@ jobs:
       feedsToUse: 'select'
       includeNuGetOrg: true
       verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Clean build with MSBuild 18.0 - .NET 10'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net10.0 /v:detailed'
-      clean: true
-      logProjectEvents: true
-
-# ==============================================================================
-# Core VSBuild Test Cases (2 jobs)
-# ==============================================================================
-
-# Test Case: VSBuild Latest with .NET 8 targeting solution file
-# Validates VSBuild with latest Visual Studio version
-- job:
-  displayName: 'VSBuild Latest - .NET 8 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild Latest - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: 'latest'
-      msbuildArgs: '/p:TargetFramework=net8.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# Test Case: VSBuild 17.0 with .NET 9 targeting solution file
-# Validates VSBuild with Visual Studio 2022 version 17.0
-- job:
-  displayName: 'VSBuild 17.0 - .NET 9 - Solution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: VSBuild@1
-    displayName: 'Build with VSBuild 17.0 - .NET 9'
-    inputs:
-      solution: '**/*.sln'
-      vsVersion: '17.0'
-      msbuildArgs: '/p:TargetFramework=net9.0 /v:detailed'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArchitecture: 'x64'
-      logProjectEvents: true
-
-# ==============================================================================
-# NuGet Custom Command Test Cases (2 jobs)
-# ==============================================================================
-
-# Test Case: NuGet custom command with MSBuildVersion 18.0
-# Validates NuGet can use specific MSBuild version via custom command
-- job:
-  displayName: 'NuGet Custom MSBuild 18.0 - .NET 8'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore with NuGet custom MSBuildVersion 18.0'
-    inputs:
-      command: 'custom'
-      arguments: 'restore SampleAPI.sln -MSBuildVersion 18.0 -Verbosity Detailed'
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 18.0 - .NET 8'
@@ -310,19 +132,37 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: NuGet custom command with MSBuildVersion 18
-# Validates NuGet can use specific MSBuild version via custom command
+  - task: VSTest@3
+    displayName: 'Run Unit Tests Only'
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*Tests*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      vsTestVersion: 'latest'
+      testFiltercriteria: 'TestCategory=Unit'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      testRunTitle: 'VSTest v3 - Unit Tests Only'
+
+# Test Case: VSTest v3 with test filter criteria - Integration tests only
+# Validates VSTest@3 test filtering for integration tests
 - job:
-  displayName: 'NuGet Custom MSBuild 18 - .NET 8'
+  displayName: 'VSTest v3 - Filter - Integration Tests'
   steps:
   - checkout: self
     clean: true
 
   - task: NuGetCommand@2
-    displayName: 'Restore with NuGet custom MSBuildVersion 18'
+    displayName: 'Restore NuGet packages'
     inputs:
-      command: 'custom'
-      arguments: 'restore SampleAPI.sln -MSBuildVersion 18 -Verbosity Detailed'
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
+      verbosityRestore: 'Detailed'
 
   - task: MSBuild@1
     displayName: 'Build with MSBuild 18.0 - .NET 8'
@@ -336,38 +176,215 @@ jobs:
       msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
       logProjectEvents: true
 
-# Test Case: NuGet custom command with MSBuildVersion 17
-# Validates NuGet can use specific MSBuild version 17 via custom command
+  - task: VSTest@3
+    displayName: 'Run Integration Tests Only'
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*Tests*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      vsTestVersion: 'latest'
+      testFiltercriteria: 'TestCategory=Integration'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      testRunTitle: 'VSTest v3 - Integration Tests Only'
+
+# Test Case: VSTest v3 with parallel execution
+# Validates VSTest@3 can run tests in parallel on multi-core machines
 - job:
-  displayName: 'NuGet Custom MSBuild 17 - .NET 9'
+  displayName: 'VSTest v3 - Parallel Execution'
   steps:
   - checkout: self
     clean: true
 
   - task: NuGetCommand@2
-    displayName: 'Restore with NuGet custom MSBuildVersion 17'
+    displayName: 'Restore NuGet packages'
     inputs:
-      command: 'custom'
-      arguments: 'restore SampleAPI.sln -MSBuildVersion 17.14.23.42201 -Verbosity Detailed'
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
+      verbosityRestore: 'Detailed'
 
   - task: MSBuild@1
-    displayName: 'Build with MSBuild 17.0 - .NET 9'
+    displayName: 'Build with MSBuild 18.0 - .NET 8'
     inputs:
       solution: '**/*.sln'
       msbuildArchitecture: 'x64'
       msbuildLocationMethod: 'version'
-      msbuildVersion: '17.0'
+      msbuildVersion: '18.0'
       platform: 'Any CPU'
       configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net9.0 /v:detailed'
+      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
       logProjectEvents: true
 
+  - task: VSTest@3
+    displayName: 'Run Tests in Parallel'
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*Tests*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      vsTestVersion: 'latest'
+      runInParallel: true
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      testRunTitle: 'VSTest v3 - Parallel Execution'
+
+# Test Case: VSTest v3 with test isolation
+# Validates VSTest@3 can run tests in isolated processes
+- job:
+  displayName: 'VSTest v3 - Test Isolation'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
+      verbosityRestore: 'Detailed'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 18.0 - .NET 8'
+    inputs:
+      solution: '**/*.sln'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
+      logProjectEvents: true
+
+  - task: VSTest@3
+    displayName: 'Run Tests in Isolation'
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*Tests*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      vsTestVersion: 'latest'
+      runTestsInIsolation: true
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      testRunTitle: 'VSTest v3 - Test Isolation'
+
+# Test Case: VSTest v3 with rerun failed tests
+# Validates VSTest@3 rerun functionality for flaky tests
+- job:
+  displayName: 'VSTest v3 - Rerun Failed Tests'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
+      verbosityRestore: 'Detailed'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 18.0 - .NET 8'
+    inputs:
+      solution: '**/*.sln'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
+      logProjectEvents: true
+
+  - task: VSTest@3
+    displayName: 'Run Tests with Rerun on Failure'
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*Tests*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      vsTestVersion: 'latest'
+      rerunFailedTests: true
+      rerunType: 'basedOnTestFailureCount'
+      rerunFailedTestCasesMaxLimit: '3'
+      rerunMaxAttempts: '2'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      testRunTitle: 'VSTest v3 - Rerun Failed Tests'
+
+# Test Case: VSTest v3 with diagnostics and dump collection
+# Validates VSTest@3 advanced diagnostics capabilities
+- job:
+  displayName: 'VSTest v3 - Diagnostics Enabled'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: NuGetCommand@2
+    displayName: 'Restore NuGet packages'
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+      feedsToUse: 'select'
+      includeNuGetOrg: true
+      verbosityRestore: 'Detailed'
+
+  - task: MSBuild@1
+    displayName: 'Build with MSBuild 18.0 - .NET 8'
+    inputs:
+      solution: '**/*.sln'
+      msbuildArchitecture: 'x64'
+      msbuildLocationMethod: 'version'
+      msbuildVersion: '18.0'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
+      logProjectEvents: true
+
+  - task: VSTest@3
+    displayName: 'Run Tests with Diagnostics'
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*Tests*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      vsTestVersion: 'latest'
+      diagnosticsEnabled: true
+      collectDumpOn: 'onAbortOnly'
+      platform: 'Any CPU'
+      configuration: '$(buildConfiguration)'
+      testRunTitle: 'VSTest v3 - Diagnostics Enabled'
+
 # ==============================================================================
-# Summary:
-# - 8 MSBuild@1 test cases covering versions 18.0, 17.0, latest with .NET 8/9/10
-# - 2 VSBuild@1 test cases covering latest and 17.0 with .NET 8/9
-# - 3 NuGet custom command test cases with MSBuildVersion 18.0, 18, and 17.14.23.42201
-# Total: 13 essential jobs for comprehensive testing
+# Summary: 8 VSTest@3 Test Cases
+# ==============================================================================
+# 1. VSTest v3 - Latest - All Tests (with code coverage)
+# 2. VSTest v3 - VS 17.0 - All Tests
+# 3. VSTest v3 - Filter - Unit Tests (TestCategory=Unit)
+# 4. VSTest v3 - Filter - Integration Tests (TestCategory=Integration)
+# 5. VSTest v3 - Parallel Execution (runInParallel: true)
+# 6. VSTest v3 - Test Isolation (runTestsInIsolation: true)
+# 7. VSTest v3 - Rerun Failed Tests (rerunFailedTests: true)
+# 8. VSTest v3 - Diagnostics Enabled (diagnosticsEnabled: true)
 #
-# For complete 39 test cases, see: azure-pipeline-all-testcases.yml
+# Test Categories Available:
+# - Unit: Temperature conversion, data validation, serialization tests
+# - Integration: API, framework, and NuGet package tests
+# - VSTestFeatures: Async, timeout, collection, string, exception tests
 # ==============================================================================
