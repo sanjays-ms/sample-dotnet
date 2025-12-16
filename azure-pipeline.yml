@@ -36,32 +36,3 @@ jobs:
       command: 'build'
       projects: '**/*.sln'
       arguments: '--configuration $(buildConfiguration) --no-restore'
-
-# ==============================================================================
-# Windows 2025 Test
-# ==============================================================================
-- job: Windows_2025
-  displayName: 'Windows 2025 - DotNetCoreCLI Restore'
-  pool:
-    name: 'Azure Pipelines'
-    vmImage: 'windows-2025'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Restore with nuget.config'
-    inputs:
-      command: 'restore'
-      projects: '**/*.sln'
-      selectOrConfig: 'config'
-      nugetConfigPath: 'nuget.config'
-      verbosityRestore: 'Detailed'
-      noCache: true
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Build'
-    inputs:
-      command: 'build'
-      projects: '**/*.sln'
-      arguments: '--configuration $(buildConfiguration) --no-restore'
