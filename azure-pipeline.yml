@@ -1,390 +1,67 @@
-# Azure Pipeline - VSTest@3 Task Testing
-# Focused on testing Visual Studio Test v3 functionality
+# Azure Pipeline - DotNetCoreCLI Package Source Mapping Bug Reproduction
+# Testing the feed- prefix issue with packageSourceMapping
 
 trigger: none
-
 pr: none
-
-pool:
-  name: 'SanjaySelfHosted'
 
 variables:
   buildConfiguration: 'Release'
 
 jobs:
 # ==============================================================================
-# VSTest@3 Test Cases
+# Ubuntu 24.04 Test
 # ==============================================================================
-
-# Test Case: VSTest v3 with latest platform version
-# Validates VSTest@3 can discover and run tests with latest VS version
-- job:
-  displayName: 'VSTest v3 - Latest - All Tests'
+- job: Ubuntu_2404
+  displayName: 'Ubuntu 24.04 - DotNetCoreCLI Restore'
+  pool:
+    name: 'Azure Pipelines'
+    vmImage: 'ubuntu-24.04'
   steps:
   - checkout: self
     clean: true
 
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore with nuget.config'
     inputs:
       command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
+      projects: '**/*.sln'
+      selectOrConfig: 'config'
+      nugetConfigPath: 'nuget.config'
       verbosityRestore: 'Detailed'
+      noCache: true
 
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 8'
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
     inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-  - task: VSTest@3
-    displayName: 'Run Tests with VSTest v3 - Latest'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*Tests*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      vsTestVersion: 'latest'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      codeCoverageEnabled: true
-      testRunTitle: 'VSTest v3 - Latest - All Tests'
-
-# Test Case: VSTest v3 with VS 17.0 platform version
-# Validates VSTest@3 can run tests with Visual Studio 2022 version 17.0
-- job:
-  displayName: 'VSTest v3 - VS 17.0 - All Tests'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 17.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '17.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-  - task: VSTest@3
-    displayName: 'Run Tests with VSTest v3 - VS 17.0'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*Tests*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      vsTestVersion: '17.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      testRunTitle: 'VSTest v3 - VS 17.0 - All Tests'
-
-# Test Case: VSTest v3 with test filter criteria - Unit tests only
-# Validates VSTest@3 test filtering with TestCategory
-- job:
-  displayName: 'VSTest v3 - Filter - Unit Tests'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-  - task: VSTest@3
-    displayName: 'Run Unit Tests Only'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*Tests*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      vsTestVersion: 'latest'
-      testFiltercriteria: 'TestCategory=Unit'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      testRunTitle: 'VSTest v3 - Unit Tests Only'
-
-# Test Case: VSTest v3 with test filter criteria - Integration tests only
-# Validates VSTest@3 test filtering for integration tests
-- job:
-  displayName: 'VSTest v3 - Filter - Integration Tests'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-  - task: VSTest@3
-    displayName: 'Run Integration Tests Only'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*Tests*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      vsTestVersion: 'latest'
-      testFiltercriteria: 'TestCategory=Integration'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      testRunTitle: 'VSTest v3 - Integration Tests Only'
-
-# Test Case: VSTest v3 with parallel execution
-# Validates VSTest@3 can run tests in parallel on multi-core machines
-- job:
-  displayName: 'VSTest v3 - Parallel Execution'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-  - task: VSTest@3
-    displayName: 'Run Tests in Parallel'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*Tests*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      vsTestVersion: 'latest'
-      runInParallel: true
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      testRunTitle: 'VSTest v3 - Parallel Execution'
-
-# Test Case: VSTest v3 with test isolation
-# Validates VSTest@3 can run tests in isolated processes
-- job:
-  displayName: 'VSTest v3 - Test Isolation'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-  - task: VSTest@3
-    displayName: 'Run Tests in Isolation'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*Tests*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      vsTestVersion: 'latest'
-      runTestsInIsolation: true
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      testRunTitle: 'VSTest v3 - Test Isolation'
-
-# Test Case: VSTest v3 with rerun failed tests
-# Validates VSTest@3 rerun functionality for flaky tests
-- job:
-  displayName: 'VSTest v3 - Rerun Failed Tests'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-  - task: VSTest@3
-    displayName: 'Run Tests with Rerun on Failure'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*Tests*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      vsTestVersion: 'latest'
-      rerunFailedTests: true
-      rerunType: 'basedOnTestFailureCount'
-      rerunFailedTestCasesMaxLimit: '3'
-      rerunMaxAttempts: '2'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      testRunTitle: 'VSTest v3 - Rerun Failed Tests'
-
-# Test Case: VSTest v3 with diagnostics and dump collection
-# Validates VSTest@3 advanced diagnostics capabilities
-- job:
-  displayName: 'VSTest v3 - Diagnostics Enabled'
-  steps:
-  - checkout: self
-    clean: true
-
-  - task: NuGetCommand@2
-    displayName: 'Restore NuGet packages'
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/*.sln'
-      feedsToUse: 'select'
-      includeNuGetOrg: true
-      verbosityRestore: 'Detailed'
-
-  - task: MSBuild@1
-    displayName: 'Build with MSBuild 18.0 - .NET 8'
-    inputs:
-      solution: '**/*.sln'
-      msbuildArchitecture: 'x64'
-      msbuildLocationMethod: 'version'
-      msbuildVersion: '18.0'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      msbuildArguments: '/p:TargetFramework=net8.0 /v:detailed'
-      logProjectEvents: true
-
-  - task: VSTest@3
-    displayName: 'Run Tests with Diagnostics'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*Tests*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      vsTestVersion: 'latest'
-      diagnosticsEnabled: true
-      collectDumpOn: 'onAbortOnly'
-      platform: 'Any CPU'
-      configuration: '$(buildConfiguration)'
-      testRunTitle: 'VSTest v3 - Diagnostics Enabled'
+      command: 'build'
+      projects: '**/*.sln'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
 
 # ==============================================================================
-# Summary: 8 VSTest@3 Test Cases
+# Windows 2025 Test
 # ==============================================================================
-# 1. VSTest v3 - Latest - All Tests (with code coverage)
-# 2. VSTest v3 - VS 17.0 - All Tests
-# 3. VSTest v3 - Filter - Unit Tests (TestCategory=Unit)
-# 4. VSTest v3 - Filter - Integration Tests (TestCategory=Integration)
-# 5. VSTest v3 - Parallel Execution (runInParallel: true)
-# 6. VSTest v3 - Test Isolation (runTestsInIsolation: true)
-# 7. VSTest v3 - Rerun Failed Tests (rerunFailedTests: true)
-# 8. VSTest v3 - Diagnostics Enabled (diagnosticsEnabled: true)
-#
-# Test Categories Available:
-# - Unit: Temperature conversion, data validation, serialization tests
-# - Integration: API, framework, and NuGet package tests
-# - VSTestFeatures: Async, timeout, collection, string, exception tests
-# ==============================================================================
+- job: Windows_2025
+  displayName: 'Windows 2025 - DotNetCoreCLI Restore'
+  pool:
+    name: 'Azure Pipelines'
+    vmImage: 'windows-2025'
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore with nuget.config'
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln'
+      selectOrConfig: 'config'
+      nugetConfigPath: 'nuget.config'
+      verbosityRestore: 'Detailed'
+      noCache: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+      projects: '**/*.sln'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
